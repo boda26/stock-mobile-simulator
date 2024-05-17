@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hourly Chart</title>
+    <style>
+        #container {
+            height: 800px;
+        }
+    </style>
+</head>
+<body>
+    <figure class="highcharts-figure">
+        <div id="container" style="width: 100%; display: block;"></div>
+    </figure>
+
+    <script>
+        function createHourlyChart(timestampString, closePricesString, symbol, lineColor) {
+            const timestamps = JSON.parse(timestampString);
+            const closePrices = JSON.parse(closePricesString);
+            let chartTitle = symbol + " Hourly Price Variation"
+            let closePriceList = []
+            for (let i = 0; i < timestamps.length; i++) {
+                closePriceList.push([
+                    timestamps[i],
+                    closePrices[i]
+                ])
+            }
+
+            Highcharts.chart('container', {
+                chart: {
+                    type: 'line',
+                    marginLeft: 0
+                },
+                title: {
+                    text: chartTitle,
+                    style: {
+                        fontSize: '40px',
+                        color: '#A0A0A0'
+                    }
+                },
+                rangeSelector: {
+                    buttonTheme: {
+                        width: 60,
+                        height: 30,
+                        style: {
+                            fontSize: '30px'
+                        }
+                    },
+                    inputStyle: {
+                        fontSize: '18px',
+                        padding: '10px'
+                    },
+                    labelStyle: {
+                        fontSize: '18px'
+                    }
+                },
+                xAxis: {
+                    type: 'datetime',
+                    tickInterval: 6 * 3600 * 1000,
+                    labels: {
+                        style: {
+                            fontSize: '25px'
+                        }
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: null
+                    },
+                    labels: {
+                        style: {
+                            fontSize: '20px'
+                        }
+                    },
+                    opposite: true,
+                },
+                series: [{
+                    name: '',
+                    data: closePriceList,
+                    type: 'line',
+                    marker: {
+                        enabled: false
+                    },
+                    color: lineColor
+                }],
+                legend: {
+                    enabled: false,
+                },
+                tooltip: {
+                    style: {
+                        fontSize: '30px'
+                    }
+                }
+            })
+        }
+    </script>
+    
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/series-label.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+</body>
+</html>
